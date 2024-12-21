@@ -6,7 +6,6 @@ export const metadata: Metadata = {
   title: "Sign Up",
 };
 
-
 export default function Page() {
   return (
     <main className="flex h-screen items-center justify-center p-5">
@@ -14,7 +13,8 @@ export default function Page() {
         <div className="space-y-1 text-center">
           <h1 className="text-3xl font-bold">Sign up to Crafted</h1>
           <p className="text-muted-foreground">
-            A place where <span className="italic">you</span> can find everything.
+            A place where <span className="italic">you</span> can find
+            everything.
           </p>
         </div>
         <div className="space-y-5">

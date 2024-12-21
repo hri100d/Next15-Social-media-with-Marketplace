@@ -9,7 +9,6 @@ generator client {
   previewFeatures = ["fullTextSearchPostgres"]
 }
 
-// prisma/schema.prisma
 datasource db {
   provider  = "postgresql"
   url  	    = env("POSTGRES_PRISMA_URL")
@@ -37,7 +36,7 @@ id        String   @id
 userId    String
 expiresAt DateTime
 
-User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
 @@map("sessions")
 }
