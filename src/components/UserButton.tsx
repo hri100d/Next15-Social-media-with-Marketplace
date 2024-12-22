@@ -17,7 +17,11 @@ import { Check, LogOutIcon, Monitor, Moon, Sun, UserIcon } from "lucide-react";
 import { logout } from "@/app/(auth)/actions";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
-import { DropdownMenuSub, DropdownMenuSubContent } from "@radix-ui/react-dropdown-menu";
+import {
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+} from "@radix-ui/react-dropdown-menu";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface UserButtonProps {
   className?: string;
@@ -26,7 +30,9 @@ interface UserButtonProps {
 export default function UserButton({ className }: UserButtonProps) {
   const { user } = useSession();
 
-  const {theme, setTheme} = useTheme();
+  const { theme, setTheme } = useTheme();
+
+  const queryClient = useQueryClient();
 
   return (
     <DropdownMenu>
@@ -50,27 +56,30 @@ export default function UserButton({ className }: UserButtonProps) {
             Theme
           </DropdownMenuSubTrigger>
           <DropdownMenuPortal>
-            <DropdownMenuSubContent>
+            <DropdownMenuSubContent className="bg-card">
               <DropdownMenuItem onClick={() => setTheme("system")}>
                 System default
-                {theme === "system" && <Check className="ms-2 size-4"/>}
+                {theme === "system" && <Check className="ms-2 size-4" />}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setTheme("light")}>
-                <Sun className="mr-2 size-4"/>
+                <Sun className="mr-2 size-4" />
                 Light
-                {theme === "light" && <Check className="ms-2 size-4"/>}
+                {theme === "light" && <Check className="ms-2 size-4" />}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setTheme("dark")}>
-                <Moon className="mr-2 size-4"/>
+                <Moon className="mr-2 size-4" />
                 Dark
-                {theme === "dark" && <Check className="ms-2 size-4"/>}
+                {theme === "dark" && <Check className="ms-2 size-4" />}
               </DropdownMenuItem>
             </DropdownMenuSubContent>
           </DropdownMenuPortal>
         </DropdownMenuSub>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          onClick={logout}
+          onClick={() => {
+            queryClient.clear();
+            logout();
+          }}
         >
           <LogOutIcon className="mr-2 size-4" />
           Logout
