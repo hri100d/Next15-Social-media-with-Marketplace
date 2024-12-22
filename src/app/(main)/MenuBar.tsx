@@ -28,7 +28,7 @@ export default function MenuBar({ className }: MenuBarProps) {
       >
         <Link href="/notifications">
           <Bell />
-          <span className="hidden lg:inline">Home</span>
+          <span className="hidden lg:inline">Notifications</span>
         </Link>
       </Button>
       <Button
@@ -39,7 +39,7 @@ export default function MenuBar({ className }: MenuBarProps) {
       >
         <Link href="/messages">
           <Mail />
-          <span className="hidden lg:inline">Home</span>
+          <span className="hidden lg:inline">Messages</span>
         </Link>
       </Button>
       <Button
@@ -50,7 +50,7 @@ export default function MenuBar({ className }: MenuBarProps) {
       >
         <Link href="/">
           <Bookmark />
-          <span className="hidden lg:inline">Home</span>
+          <span className="hidden lg:inline">Bookmarks</span>
         </Link>
       </Button>
     </div>
