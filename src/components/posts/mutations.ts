@@ -38,7 +38,7 @@ export function useDeletePostMutation() {
           };
         }
       );
-      s;
+
       toast({
         description: "Post deleted",
       });
