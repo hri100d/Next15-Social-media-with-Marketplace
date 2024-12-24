@@ -38,8 +38,10 @@ export async function GET(
 
     const data: FollowerInfo = {
       followers: user._count.followers,
-      isFolloedByUser: !!user.followers.length,
+      isFollowedByUser: !!user.followers.length,
     };
+
+    return Response.json(data);
   } catch (error) {
     console.log(error);
     return Response.json({ error: "Internal server error" }, { status: 500 });
@@ -57,7 +59,7 @@ export async function POST(
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    await prisma.follow.upsert({
+    const newFollow = await prisma.follow.upsert({
       where: {
         followerId_followingId: {
           followerId: loggedInUser.id,
@@ -70,6 +72,8 @@ export async function POST(
       },
       update: {},
     });
+
+    return Response.json(newFollow);
   } catch (error) {
     console.log(error);
     return Response.json({ error: "Internal server error" }, { status: 500 });
@@ -80,23 +84,23 @@ export async function DELETE(
   req: Request,
   { params: { userId } }: { params: { userId: string } }
 ) {
-    try {
-        const { user: loggedInUser } = await validateRequest();
+  try {
+    const { user: loggedInUser } = await validateRequest();
 
-        if (!loggedInUser) {
-        return Response.json({ error: "Unauthorized" }, { status: 401 });
-        }
-
-        await prisma.follow.deleteMany({
-            where: {
-                followerId: loggedInUser.id,
-                followingId: userId,
-            }
-        })
-
-        return new Response();
-    } catch (error) {
-        console.log(error);
-        return Response.json({ error: "Internal server error" }, { status: 500 });     
+    if (!loggedInUser) {
+      return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
+
+    await prisma.follow.deleteMany({
+      where: {
+        followerId: loggedInUser.id,
+        followingId: userId,
+      },
+    });
+
+    return new Response();
+  } catch (error) {
+    console.log(error);
+    return Response.json({ error: "Internal server error" }, { status: 500 });
+  }
 }
