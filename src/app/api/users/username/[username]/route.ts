@@ -8,6 +8,7 @@ export async function GET(
 ) {
   try {
     const { user: loggedInUser } = await validateRequest();
+
     if (!loggedInUser) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -28,7 +29,7 @@ export async function GET(
 
     return Response.json(user);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return Response.json({ error: "Internal server error" }, { status: 500 });
   }
 }

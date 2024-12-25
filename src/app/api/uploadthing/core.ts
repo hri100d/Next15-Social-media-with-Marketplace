@@ -7,25 +7,26 @@ const f = createUploadthing();
 
 export const fileRouter = {
   avatar: f({
-    image: {
-      maxFileSize: "512KB",
-    },
+    image: { maxFileSize: "512KB" },
   })
     .middleware(async () => {
       const { user } = await validateRequest();
+      console.log("Middleware executed. User:", user);
 
-      if (!user) throw new UploadThingError("Unauthorized");
+      if (!user) {
+        console.error("Middleware error: Unauthorized");
+        throw new UploadThingError("Unauthorized");
+      }
 
       return { user };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      const oldAvataeUrl = metadata.user.avatarUrl;
+      const oldAvatarUrl = metadata.user.avatarUrl;
 
-      if (oldAvataeUrl) {
-        const key = oldAvataeUrl.split(
+      if (oldAvatarUrl) {
+        const key = oldAvatarUrl.split(
           `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`
         )[1];
-
         await new UTApi().deleteFiles(key);
       }
 
@@ -40,7 +41,41 @@ export const fileRouter = {
           avatarUrl: newAvatarUrl,
         },
       });
+
       return { avatarUrl: newAvatarUrl };
+    }),
+  attachment: f({
+    image: { maxFileSize: "4MB", maxFileCount: 5 },
+    video: { maxFileSize: "64MB", maxFileCount: 5 },
+  })
+    .middleware(async () => {
+      const { user } = await validateRequest();
+      console.log("Attachment middleware executed. User:", user);
+
+      if (!user) {
+        console.error("Attachment middleware error: Unauthorized");
+        throw new UploadThingError("Unauthorized");
+      }
+
+      console.log(process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID);
+      return {};
+    })
+    .onUploadComplete(async ({ file }) => {
+      console.log("Attachment onUploadComplete triggered. File:", file);
+
+      const media = await prisma.media.create({
+        data: {
+          url: file.url.replace(
+            "/f/",
+            `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`
+          ),
+          type: file.type.startsWith("image") ? "IMAGE" : "VIDEO",
+        },
+      });
+
+      console.log("Media created:", media);
+
+      return { mediaId: media.id };
     }),
 } satisfies FileRouter;
 
