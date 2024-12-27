@@ -50,9 +50,11 @@ export async function GET(
 
 export async function POST(
   req: Request,
-  { params: { postId } }: { params: { postId: string } }
+  context: { params: { postId: string } }
 ) {
   try {
+    const { postId } = await context.params;
+
     const { user: loggedInUser } = await validateRequest();
 
     if (!loggedInUser) {

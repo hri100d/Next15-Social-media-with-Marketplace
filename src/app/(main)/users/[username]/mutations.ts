@@ -13,11 +13,8 @@ import { useToast } from "@/hooks/use-toast";
 
 export function useUpdateProfileMutation() {
   const { toast } = useToast();
-
   const router = useRouter();
-
   const queryClient = useQueryClient();
-
   const { startUpload: startAvatarUpload } = useUploadThing("avatar");
 
   const mutation = useMutation({
@@ -29,14 +26,17 @@ export function useUpdateProfileMutation() {
       avatar?: File;
     }) => {
       return Promise.all([
-        updateUserProfile(values),
-        avatar && startAvatarUpload([avatar]),
+        avatar && (await startAvatarUpload([avatar])),
+        await updateUserProfile(values),
       ]);
     },
-    onSuccess: async ([updatedUser, uploadResult]) => {
-      const newAvatarUrl = uploadResult?.[0]?.url;
+    onSuccess: async ([uploadResult, updatedUser]) => {
+      const newAvatarUrl = uploadResult?.[0].url;
 
-      const queryFilter: QueryFilters = {
+      const queryFilter: QueryFilters<
+        InfiniteData<PostsPage, string | null>,
+        Error
+      > = {
         queryKey: ["post-feed"],
       };
 
