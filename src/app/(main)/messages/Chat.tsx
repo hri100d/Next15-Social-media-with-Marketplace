@@ -19,7 +19,7 @@ export default function Chat() {
     return <Loader2 className="mx-auto my-3 animate-spin" />;
   }
   return (
-    <main className="relative w-full overflow-hidden rounded-2xl bg-card shadow-sm">
+    <main className="relative w-full overflow-hidden rounded-sm bg-card shadow-sm">
       <div className="absolute bottom-0 top-0 flex w-full">
         <StreamChat
           client={chatClient}

@@ -37,7 +37,7 @@ export default function Notification({ notification }: NotificationProps) {
     <Link href={href} className="block">
       <article
         className={cn(
-          "flex gap-3 rounded-2xl bg-card p-5 shadow-sm transition-colors gover:bg-card/700",
+          "flex gap-3 rounded-sm bg-card p-5 shadow-sm transition-colors gover:bg-card/700",
           !notification.read && "bg-primary/10"
         )}
       >

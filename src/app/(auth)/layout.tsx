@@ -10,5 +10,9 @@ export default async function Layout({
 
   if (user) redirect("/");
 
-  return <>{children}</>;
+  return (
+    <div>
+      {children}
+    </div>
+  );
 }

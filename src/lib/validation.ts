@@ -20,10 +20,21 @@ export const loginSchema = z.object({
 
 export type LoginValues = z.infer<typeof loginSchema>;
 
-export const createPostSchema = z.object({
-  content: requiredString,
-  mediaIds: z.array(z.string()).max(5, "Cannot have more than 5 attachments"),
-});
+export const createPostSchema = z
+  .object({
+    content: z.string().optional(),
+    mediaIds: z
+      .array(z.string())
+      .max(5, "Cannot have more than 5 attachments")
+      .optional(),
+  })
+  .refine(
+    (data) => data.content?.trim()?.length || (data.mediaIds?.length ?? 0) > 0,
+    {
+      message: "Either content or at least one media attachment is required",
+      path: ["content"],
+    }
+  );
 
 export const updateUserProfileSchema = z.object({
   displayName: requiredString,
@@ -34,4 +45,4 @@ export type UpdateUserProfileValues = z.infer<typeof updateUserProfileSchema>;
 
 export const createCommenSchema = z.object({
   content: requiredString,
-})
+});

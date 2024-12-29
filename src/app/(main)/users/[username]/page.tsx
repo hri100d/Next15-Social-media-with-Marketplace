@@ -67,7 +67,7 @@ export default async function Page({ params }: PageProps) {
     <main className="flex w-full min-w-0 gap-5">
       <div className="w-full min-w-0 space-y-5">
         <UserProfile user={user} loggedInUserId={loggedInUser.id} />
-        <div className="rounded-2xl bg-card p-5 shadow-sm">
+        <div className="rounded-sm bg-card p-5 shadow-sm">
           <h2 className="text-center text-2xl font-bold">
             {user.displayName}&apos;s posts
           </h2>
@@ -93,7 +93,7 @@ async function UserProfile({ user, loggedInUserId }: UserProfileProps) {
   };
 
   return (
-    <div className="h-fit w-full space-y-5 rounded-2xl bg-card p-5 shadow-sm">
+    <div className="h-fit w-full space-y-5 rounded-sm bg-card p-5 shadow-sm">
       <UserAvatar
         avatarUrl={user.avatarUrl}
         size={250}

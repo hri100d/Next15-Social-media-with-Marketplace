@@ -12,7 +12,6 @@ export const fileRouter = {
   })
     .middleware(async () => {
       const { user } = await validateRequest();
-      console.log("Middleware executed. User:", user);
 
       if (!user) {
         console.error("Middleware error: Unauthorized");
@@ -60,7 +59,6 @@ export const fileRouter = {
   })
     .middleware(async () => {
       const { user } = await validateRequest();
-      console.log("Attachment middleware executed. User:", user);
 
       if (!user) {
         console.error("Attachment middleware error: Unauthorized");
@@ -70,7 +68,6 @@ export const fileRouter = {
       return {};
     })
     .onUploadComplete(async ({ file }) => {
-      console.log("Attachment onUploadComplete triggered. File:", file);
 
       const fileUrl = file.appUrl.replace(
         `/f/${file.key}`,
@@ -83,7 +80,6 @@ export const fileRouter = {
         },
       });
 
-      console.log("Media created:", media);
 
       return { mediaId: media.id };
     }),
