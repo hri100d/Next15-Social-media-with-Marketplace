@@ -1,27 +1,29 @@
 "use client";
 
-import { PostData } from "@/lib/types";
+import { PaidPostData } from "@/lib/types";
 import Link from "next/link";
 import UserAvatar from "../UserAvatar";
 import { cn, formatRelativeData } from "@/lib/utils";
 import { useSession } from "@/app/(main)/SessionProvider";
-import PostMoreButton from "./PostMoreButton";
 import Linkify from "../Linkify";
 import UserTooltip from "../UserTooltip";
 import { Media } from "@prisma/client";
 import Image from "next/image";
-import LikeButton from "./LikeButton";
-import BookmarkButton from "./BookmarkButton";
 import { useState } from "react";
 import { MessageSquare } from "lucide-react";
-import Comments from "../comments/posts/Comments";
 import { Button } from "../ui/button";
+import Comments from "../comments/paid/Comments";
+import PostMoreButton from "./PaidPostMoreButton";
+import PaidPostMoreButton from "./PaidPostMoreButton";
+import BookmarkButton from "./BookmarkButton";
+import PaidBookmarkButton from "./PaidBookmarkButton";
+import LoadingButton from "../LoadingButton";
 
-interface PostProps {
-  post: PostData;
+interface PaidPostProps {
+  paidpost: PaidPostData;
 }
 
-export default function Post({ post }: PostProps) {
+export default function PaidPost({ paidpost }: PaidPostProps) {
   const { user } = useSession();
 
   const [showComments, setShowComments] = useState(false);
@@ -30,40 +32,40 @@ export default function Post({ post }: PostProps) {
     <article className="group/post space-y-3 rounded-sm bg-card p-5 shadow-sm">
       <div className="flex justify-between gap-3">
         <div className="flex flex-wrap gap-3">
-          <UserTooltip user={post.user}>
-            <Link href={`/users/${post.user.username}`}>
-              <UserAvatar avatarUrl={post.user.avatarUrl} />
+          <UserTooltip user={paidpost.user}>
+            <Link href={`/users/${paidpost.user.username}`}>
+              <UserAvatar avatarUrl={paidpost.user.avatarUrl} />
             </Link>
           </UserTooltip>
           <div>
-            <UserTooltip user={post.user}>
+            <UserTooltip user={paidpost.user}>
               <Link
-                href={`/users/${post.user.username}`}
+                href={`/users/${paidpost.user.username}`}
                 className="block font-medium hover:underline"
               >
-                {post.user.displayName}
+                {paidpost.user.displayName}
               </Link>
             </UserTooltip>
             <Link
-              href={`/posts/${post.id}`}
+              href={`/paidPosts/${paidpost.id}`}
               className="block text-sm text-muted-foreground hover:underline"
               suppressHydrationWarning
             >
-              {formatRelativeData(post.createdAt)}
+              {formatRelativeData(paidpost.createdAt)}
             </Link>
           </div>
         </div>
         <div className="flex justify-end gap-3 items-center">
-          {post.user.id === user.id && (
-            <PostMoreButton
-              post={post}
+          {paidpost.user.id === user.id && (
+            <PaidPostMoreButton
+              paidpost={paidpost}
               className="opacity-0 transition-opacity group-hover/post:opacity-100"
             />
           )}
-          <BookmarkButton
-            postId={post.id}
+          <PaidBookmarkButton
+            paidpostId={paidpost.id}
             initialState={{
-              isBookmarkedByUser: post.bookmarks.some(
+              isBookmarkedByUser: paidpost.bookmarks.some(
                 (bookmark) => bookmark.userId === user.id
               ),
             }}
@@ -71,28 +73,24 @@ export default function Post({ post }: PostProps) {
         </div>
       </div>
       <Linkify>
-        <div className="whitespace-pre-line break-words">{post.content}</div>
+        <div className="whitespace-pre-line break-words">
+          {paidpost.content}
+        </div>
       </Linkify>
-      {!!post.attachments.length && (
-        <MediaPreviews attachments={post.attachments} />
+      {!!paidpost.attachments.length && (
+        <MediaPreviews attachments={paidpost.attachments} />
       )}
       <hr className="text-muted-foreground" />
       <div className="flex justify-between gap-5">
         <div className="flex items-center gap-5">
-          <LikeButton
-            postId={post.id}
-            initialState={{
-              likes: post._count.likes,
-              isLikedByUser: post.likes.some((like) => like.userId === user.id),
-            }}
-          />
           <CommentButton
-            post={post}
+            paidpost={paidpost}
             onClick={() => setShowComments(!showComments)}
           />
         </div>
+        <Button variant="default">Buy for {paidpost.price}</Button>
       </div>
-      {showComments && <Comments post={post} />}
+      {showComments && <Comments paidpost={paidpost} />}
     </article>
   );
 }
@@ -147,16 +145,16 @@ function MediaPreview({ media }: MediaPreviewProps) {
 }
 
 interface CommentButtonProps {
-  post: PostData;
+  paidpost: PaidPostData;
   onClick: () => void;
 }
 
-function CommentButton({ post, onClick }: CommentButtonProps) {
+function CommentButton({ paidpost, onClick }: CommentButtonProps) {
   return (
     <button onClick={onClick} className="flex items-center gap-2">
       <MessageSquare className="size-5" />
       <span className="text-sm font-medium tabular-nums">
-        {post._count.comments}{" "}
+        {paidpost._count.comments}{" "}
         <span className="hidden sm:inline">comments</span>
       </span>
     </button>
@@ -182,7 +180,6 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ mediaFiles }) => {
 
   return (
     <div className="relative w-full max-w-[500px] mx-auto group">
-      {/* Media Display */}
       <div className="overflow-hidden rounded-lg flex items-center justify-center">
         {mediaFiles[currentIndex].type === "IMAGE" ? (
           <img
@@ -199,7 +196,6 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ mediaFiles }) => {
         )}
       </div>
 
-      {/* Navigation Arrows */}
       {mediaFiles.length > 1 && (
         <>
           <Button

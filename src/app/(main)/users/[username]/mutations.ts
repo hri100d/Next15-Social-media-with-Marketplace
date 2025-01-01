@@ -37,7 +37,7 @@ export function useUpdateProfileMutation() {
         InfiniteData<PostsPage, string | null>,
         Error
       > = {
-        queryKey: ["post-feed"],
+        queryKey: ["paid-post-feed", "post-feed"],
       };
 
       await queryClient.cancelQueries(queryFilter);

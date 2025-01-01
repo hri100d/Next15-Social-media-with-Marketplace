@@ -8,8 +8,8 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import { submitPost } from "./actions";
 import { useToast } from "@/hooks/use-toast";
+import { submitPost } from "./actions";
 
 export function useSubmitPostMutation() {
   const { toast } = useToast();

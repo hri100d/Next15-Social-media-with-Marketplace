@@ -13,6 +13,8 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 import EditProfileButton from "./EditProfileButton";
 import UserPosts from "./UserPosts";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import UserPaidPosts from "./UserPaidPost";
 
 interface PageProps {
   params: { username: string };
@@ -72,7 +74,18 @@ export default async function Page({ params }: PageProps) {
             {user.displayName}&apos;s posts
           </h2>
         </div>
-        <UserPosts userId={user.id} />
+        <Tabs defaultValue="user-posts">
+          <TabsList>
+            <TabsTrigger value="user-posts">Posts</TabsTrigger>
+            <TabsTrigger value="user-paid-posts">Paid Posts</TabsTrigger>
+          </TabsList>
+          <TabsContent value="user-posts">
+            <UserPosts userId={user.id} />
+          </TabsContent>
+          <TabsContent value="user-paid-posts">
+            <UserPaidPosts userId={user.id} />
+          </TabsContent>
+        </Tabs>
       </div>
       <TrendsSidebar />
     </main>

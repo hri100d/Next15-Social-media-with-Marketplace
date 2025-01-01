@@ -1,18 +1,18 @@
-import { PostData } from "@/lib/types";
+import { PaidPostData, PostData } from "@/lib/types";
 import { useState } from "react";
-import { useSubmitCommentMutation } from "./mutation";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { Input } from "../../ui/input";
+import { Button } from "../../ui/button";
 import { Loader2, SendHorizonal } from "lucide-react";
+import { useSubmitPaidCommentMutation } from "./mutation";
 
-interface CommentInputProps {
-  post: PostData;
+interface PaidCommentInputProps {
+  paidpost: PaidPostData;
 }
 
-export default function CommentInput({ post }: CommentInputProps) {
+export default function CommentInput({ paidpost }: PaidCommentInputProps) {
   const [input, setInput] = useState("");
 
-  const mutation = useSubmitCommentMutation(post.id);
+  const mutation = useSubmitPaidCommentMutation(paidpost.id);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -21,7 +21,7 @@ export default function CommentInput({ post }: CommentInputProps) {
 
     mutation.mutate(
       {
-        post,
+        paidpost: paidpost,
         content: input,
       },
       {

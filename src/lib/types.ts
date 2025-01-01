@@ -86,6 +86,23 @@ export interface CommentsPage {
   previousCursor: string | null;
 }
 
+export type PaidCommentData = Prisma.PaidPostCommentGetPayload<{
+  include: ReturnType<typeof getPaidCommentsDataInclude>;
+}>;
+
+export interface PaidCommentsPage {
+  paidComments: PaidCommentData[];
+  previousCursor: string | null;
+}
+
+export function getPaidCommentsDataInclude(loggedInUserId: string) {
+  return {
+    user: {
+      select: getUserDataSelect(loggedInUserId),
+    },
+  } satisfies Prisma.PaidPostCommentInclude;
+}
+
 export const notificationsInclude = {
   issuer: {
     select: {
@@ -130,4 +147,35 @@ export interface NotificationCountInfo {
 
 export interface MessageCountInfo {
   unreadCount: number;
+}
+
+export function getPaidPostDataInclude(loggedInUserId: string) {
+  return {
+    user: {
+      select: getUserDataSelect(loggedInUserId),
+    },
+    attachments: true,
+    bookmarks: {
+      where: {
+        userId: loggedInUserId,
+      },
+      select: {
+        userId: true,
+      },
+    },
+    _count: {
+      select: {
+        comments: true,
+      },
+    },
+  } satisfies Prisma.PaidPostInclude;
+}
+
+export type PaidPostData = Prisma.PaidPostGetPayload<{
+  include: ReturnType<typeof getPaidPostDataInclude>;
+}>;
+
+export interface PaidPostsPage {
+  paidposts: PaidPostData[];
+  nextCursor: string | null;
 }

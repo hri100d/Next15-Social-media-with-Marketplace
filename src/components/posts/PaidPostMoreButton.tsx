@@ -1,4 +1,4 @@
-import { CommentData } from "@/lib/types";
+import { PaidPostData, PostData } from "@/lib/types";
 import { MoreHorizontal, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../ui/button";
@@ -8,17 +8,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import DeleteCommentDialog from "./DeleteCommentDialog";
+import DeletePostDialog from "./DeletePostDialog";
+import DeletePaidPostDialog from "./DeletePaidPostDialog";
 
-interface CommentMoreButtonProps {
-  comment: CommentData;
+interface PaidPostMoreButtonProps {
+  paidpost: PaidPostData;
   className?: string;
 }
 
-export default function CommentMoreButton({
-  comment,
+export default function PaidPostMoreButton({
+  paidpost,
   className,
-}: CommentMoreButtonProps) {
+}: PaidPostMoreButtonProps) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   return (
@@ -38,8 +39,8 @@ export default function CommentMoreButton({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <DeleteCommentDialog
-        comment={comment}
+      <DeletePaidPostDialog
+        paidpost={paidpost}
         open={showDeleteDialog}
         onClose={() => setShowDeleteDialog(false)}
       />

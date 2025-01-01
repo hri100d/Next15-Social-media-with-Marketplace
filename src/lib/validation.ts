@@ -1,3 +1,4 @@
+import { count } from "console";
 import { z } from "zod";
 
 const requiredString = z.string().trim().min(1, "Required");
@@ -45,4 +46,15 @@ export type UpdateUserProfileValues = z.infer<typeof updateUserProfileSchema>;
 
 export const createCommenSchema = z.object({
   content: requiredString,
+});
+
+export const createPaidPostSchema = z.object({
+  title: requiredString,
+  content: z.string().min(1).max(1000),
+  price: z.coerce.number().gte(1).lte(999999),
+  count: z.coerce.number().gte(1).lte(999999),
+  mediaIds: z
+    .array(z.string())
+    .max(5, "Cannot have more than 5 attachments")
+    .min(1, "Should have atleast one image or video"),
 });

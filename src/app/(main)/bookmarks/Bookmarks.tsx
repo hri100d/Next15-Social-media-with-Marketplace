@@ -17,7 +17,7 @@ export default function Bookmarks() {
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: ["post-feed", "bookmarks"],
+    queryKey: ["paid-post-feed", "post-feed", "bookmarks"],
     queryFn: ({ pageParam }) =>
       kyInstance
         .get(

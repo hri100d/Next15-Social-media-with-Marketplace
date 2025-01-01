@@ -12,8 +12,8 @@ import { ImageIcon, Loader2, X } from "lucide-react";
 import Image from "next/image";
 import { ClipboardEvent, useRef } from "react";
 import { useSubmitPostMutation } from "./mutations";
-import "./styles.css";
-import useMediaUpload, { Attachment } from "./useMediaUpload";
+import "../styles.css";
+import useMediaUpload, { Attachment } from "../useMediaUpload";
 import { useDropzone } from "@uploadthing/react";
 
 export default function PostEditor() {

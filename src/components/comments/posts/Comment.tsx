@@ -1,7 +1,7 @@
 import { CommentData } from "@/lib/types";
-import UserTooltip from "../UserTooltip";
+import UserTooltip from "../../UserTooltip";
 import Link from "next/link";
-import UserAvatar from "../UserAvatar";
+import UserAvatar from "../../UserAvatar";
 import { formatRelativeData } from "@/lib/utils";
 import { useSession } from "@/app/(main)/SessionProvider";
 import CommentMoreButton from "./CommentMoreButton";
@@ -33,7 +33,7 @@ export default function Comment({ comment }: CommentProps) {
             </Link>
           </UserTooltip>
           <span className="text-muted-foreground">
-            {formatRelativeData(comment.createAt)}
+            {formatRelativeData(comment.createdAt)}
           </span>
         </div>
         <div>{comment.content}</div>

@@ -15,27 +15,36 @@ datasource db {
 }
 
 model User {
-  id                    String         @id
-  username              String         @unique
+  id                    String               @id
+  username              String               @unique
   displayName           String
-  email                 String?        @unique
+  email                 String?              @unique
   passwordHash          String?
   avatarUrl             String?
   bio                   String?
+  stripeCustomerId      String?              // Stripe Customer ID for managing payments
+  stripeAccountId       String?              // Stripe Account ID for payouts
+  stripeConnectEnabled  Boolean              @default(false) // Indicates if Stripe Connect is set up
+  stripePayoutsEnabled  Boolean              @default(false) // Indicates if payouts are enabled
   sessions              Session[]
   posts                 Post[]
-  following             Follow[]       @relation("Following")
-  followers             Follow[]       @relation("Followers")
+  paidPosts             PaidPost[]           // Paid posts created by the user
+  following             Follow[]             @relation("Following")
+  followers             Follow[]             @relation("Followers")
   likes                 Like[]
   bookmarks             Bookmark[]
+  paidPostBookmarks     PaidPostBookmark[]   // Bookmarks for paid posts
   comments              Comment[]
-  receivedNotifications Notification[] @relation("Recipient")
-  issuedNotifications   Notification[] @relation("Issuer")
+  paidPostComments      PaidPostComment[]    // Comments on paid posts
+  receivedNotifications Notification[]       @relation("Recipient")
+  issuedNotifications   Notification[]       @relation("Issuer")
 
   createdAt DateTime @default(now())
 
   @@map("users")
 }
+
+
 
 model Session {
   id        String   @id
@@ -72,16 +81,80 @@ model Post {
   @@map("posts")
 }
 
-model Media {
-  id     String    @id @default(cuid())
-  postId String?
-  post   Post?     @relation(fields: [postId], references: [id], onDelete: SetNull)
-  type   MediaType
-  url    String
+model PaidPost {
+  id                  String         @id @default(cuid())
+  title               String         
+  content             String
+  price               Int   
+  count               Int
+  userId              String
+  user                User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  attachments         Media[]        @relation("PaidPostMedia")
+  bookmarks           PaidPostBookmark[] // Bookmarks for the PaidPost
+  comments            PaidPostComment[] // Comments for the PaidPost
+  linkedNotifications Notification[] @relation("PaidPostNotifications") // Notifications linked to the PaidPost
 
   createdAt DateTime @default(now())
 
+  @@map("paid_posts")
+}
+
+model PaidPostBookmark {
+  id        String     @id @default(cuid())
+  userId    String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  paidPostId String
+  paidPost  PaidPost   @relation(fields: [paidPostId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, paidPostId])
+  @@map("paid_post_bookmarks")
+}
+
+model PaidPostComment {
+  id         String     @id @default(cuid())
+  content    String
+  userId     String
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  paidPostId String
+  paidPost   PaidPost   @relation(fields: [paidPostId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@map("paid_post_comments")
+}
+
+model Media {
+  id         String    @id @default(cuid())
+  postId     String?
+  post       Post?     @relation(fields: [postId], references: [id], onDelete: SetNull)
+  paidPostId String?
+  paidPost   PaidPost? @relation("PaidPostMedia", fields: [paidPostId], references: [id], onDelete: SetNull)
+  type       MediaType
+  url        String
+
+  createdAt  DateTime @default(now())
+
   @@map("post_media")
+}
+
+model Notification {
+  id            String           @id @default(cuid())
+  recipientId   String
+  recipient     User             @relation("Recipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  issuerId      String
+  issuer        User             @relation("Issuer", fields: [issuerId], references: [id], onDelete: Cascade)
+  postId        String?
+  post          Post?            @relation(fields: [postId], references: [id], onDelete: Cascade)
+  paidPostId    String?
+  paidPost      PaidPost?        @relation("PaidPostNotifications", fields: [paidPostId], references: [id], onDelete: Cascade)
+  type          NotificationType
+  read          Boolean          @default(false)
+
+  createdAt     DateTime @default(now())
+
+  @@map("notifications")
 }
 
 enum MediaType {
@@ -123,22 +196,6 @@ model Bookmark {
 
   @@unique([userId, postId])
   @@map("bookmarks")
-}
-
-model Notification {
-  id          String           @id @default(cuid())
-  recipientId String
-  recipient   User             @relation("Recipient", fields: [recipientId], references: [id], onDelete: Cascade)
-  issuerId    String
-  issuer      User             @relation("Issuer", fields: [issuerId], references: [id], onDelete: Cascade)
-  postId      String?
-  post        Post?            @relation(fields: [postId], references: [id], onDelete: Cascade)
-  type        NotificationType
-  read        Boolean          @default(false)
-
-  createdAt DateTime @default(now())
-
-  @@map("notifications")
 }
 
 enum NotificationType {

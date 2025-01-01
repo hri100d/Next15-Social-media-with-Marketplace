@@ -6,22 +6,22 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import { deleteComment, submitComment } from "./actions";
-import { CommentData, CommentsPage } from "@/lib/types";
+import { CommentsPage, PaidCommentsPage } from "@/lib/types";
+import { deletePaidComment, submitPaidComment } from "./actions";
 
-export function useSubmitCommentMutation(postId: string) {
+export function useSubmitPaidCommentMutation(postId: string) {
   const { toast } = useToast();
 
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: submitComment,
-    onSuccess: async (newComment) => {
-      const queryKey: QueryKey = ["comments", postId];
+    mutationFn: submitPaidComment,
+    onSuccess: async (newPaidComment) => {
+      const queryKey: QueryKey = ["paid-comments", postId];
 
       await queryClient.cancelQueries({ queryKey });
 
-      queryClient.setQueryData<InfiniteData<CommentsPage, string | null>>(
+      queryClient.setQueryData<InfiniteData<PaidCommentsPage, string | null>>(
         queryKey,
         (oldData) => {
           const firstPage = oldData?.pages[0];
@@ -32,7 +32,7 @@ export function useSubmitCommentMutation(postId: string) {
               pages: [
                 {
                   previousCursor: firstPage.previousCursor,
-                  comments: [...firstPage.comments, newComment],
+                  paidComments: [...firstPage.paidComments, newPaidComment],
                 },
                 ...oldData.pages.slice(1),
               ],
@@ -69,16 +69,16 @@ export function useDeleteCommentMutation() {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: deleteComment,
-    onSuccess: async (deletedComment) => {
+    mutationFn: deletePaidComment,
+    onSuccess: async (deletedPaidComment) => {
       const queryFilter: QueryFilters<
-        InfiniteData<CommentsPage, string | null>,
+        InfiniteData<PaidCommentsPage, string | null>,
         Error
-      > = { queryKey: ["comments", deletedComment.postId] };
+      > = { queryKey: ["paid-comments", deletedPaidComment.paidPostId] };
 
       await queryClient.cancelQueries(queryFilter);
 
-      queryClient.setQueriesData<InfiniteData<CommentsPage, string | null>>(
+      queryClient.setQueriesData<InfiniteData<PaidCommentsPage, string | null>>(
         queryFilter,
         (oldData) => {
           if (!oldData) return;
@@ -87,7 +87,9 @@ export function useDeleteCommentMutation() {
             pageParams: oldData.pageParams,
             pages: oldData.pages.map((page) => ({
               previousCursor: page.previousCursor,
-              comments: page.comments.filter((c) => c.id !== deletedComment.id),
+              paidComments: page.paidComments.filter(
+                (c) => c.id !== deletedPaidComment.id
+              ),
             })),
           };
         }

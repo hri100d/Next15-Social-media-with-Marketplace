@@ -70,7 +70,7 @@ export const fileRouter = {
     .onUploadComplete(async ({ file }) => {
 
       const fileUrl = file.appUrl.replace(
-        `/f/${file.key}`,
+        `/f/`,
         `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`
       );
       const media = await prisma.media.create({
