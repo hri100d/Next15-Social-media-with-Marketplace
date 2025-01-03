@@ -82,8 +82,8 @@ export async function BuyProduct(formData: FormData) {
         destination: user.connectedAccountId as string,
       },
     },
-    success_url: "http://localhost:3000/payment/success",
-    cancel_url: "http://localhost:3000/payment/cancel",
+    success_url: `${process.env.NEXT_PUBLIC_BASE_URL as string}/payment/success`,
+    cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL as string}/payment/cancel`,
   });
 
   if (session.lastResponse.statusCode === 200 && data.count === 1) {

@@ -53,8 +53,8 @@ export async function CreateStripeAccountLink() {
 
   const accountLink = await stripe.accountLinks.create({
     account: data?.connectedAccountId as string,
-    refresh_url: "http://localhost:3000",
-    return_url: "http://localhost:3000",
+    refresh_url: process.env.NEXT_PUBLIC_BASE_URL as string,
+    return_url: process.env.NEXT_PUBLIC_BASE_URL as string,
     type: "account_onboarding",
   });
 
