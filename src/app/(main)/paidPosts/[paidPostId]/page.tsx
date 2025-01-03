@@ -40,7 +40,8 @@ export async function generateMetadata({ params: { paidPostId } }: PageProps) {
   };
 }
 
-export default async function Page({ params: { paidPostId } }: PageProps) {
+export default async function Page({ params }: PageProps) {
+  const { paidPostId } = params;
   const { user } = await validateRequest();
 
   if (!user) {
