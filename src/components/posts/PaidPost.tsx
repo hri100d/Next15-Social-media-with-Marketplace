@@ -164,7 +164,7 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ mediaFiles }) => {
     <div className="relative w-full max-w-[500px] mx-auto group">
       <div className="overflow-hidden rounded-lg flex items-center justify-center">
         {mediaFiles[currentIndex].type === "IMAGE" ? (
-          <Image
+          <img
             src={mediaFiles[currentIndex].url}
             alt={`Media ${currentIndex + 1}`}
             className="w-auto h-auto max-w-[500px] max-h-[500px] object-contain"

@@ -150,7 +150,6 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ mediaFiles }) => {
 
   return (
     <div className="relative w-full max-w-[500px] mx-auto group">
-      {/* Media Display */}
       <div className="overflow-hidden rounded-lg flex items-center justify-center">
         {mediaFiles[currentIndex].type === "IMAGE" ? (
           <Image
@@ -167,7 +166,6 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ mediaFiles }) => {
         )}
       </div>
 
-      {/* Navigation Arrows */}
       {mediaFiles.length > 1 && (
         <>
           <Button
