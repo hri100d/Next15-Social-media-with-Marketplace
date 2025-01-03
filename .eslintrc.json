@@ -2,9 +2,17 @@
   "rules": {
     "no-console": "off"
   },
+
   "parser": "@babel/eslint-parser",
   "parserOptions": {
+    "requireConfigFile": false,
     "ecmaVersion": 2021,
     "sourceType": "module"
-  }
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "extends": ["eslint:recommended"]
 }
