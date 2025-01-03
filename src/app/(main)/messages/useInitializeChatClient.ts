@@ -2,7 +2,6 @@ import { StreamChat } from "stream-chat";
 import { useSession } from "../SessionProvider";
 import { useEffect, useState } from "react";
 import kyInstance from "@/lib/ky";
-import { error } from "console";
 
 export default function useInitializeChatClient() {
   const { user } = useSession();

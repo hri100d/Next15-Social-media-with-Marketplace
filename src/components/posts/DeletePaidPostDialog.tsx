@@ -1,4 +1,4 @@
-import { PaidPostData, PostData } from "@/lib/types";
+import { PaidPostData } from "@/lib/types";
 import LoadingButton from "../LoadingButton";
 import { Button } from "../ui/button";
 import {

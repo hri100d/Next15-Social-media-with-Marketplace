@@ -1,4 +1,4 @@
-import { PaidPostData, PostData } from "@/lib/types";
+import { PaidPostData } from "@/lib/types";
 import { MoreHorizontal, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../ui/button";
@@ -8,7 +8,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import DeletePostDialog from "./DeletePostDialog";
 import DeletePaidPostDialog from "./DeletePaidPostDialog";
 
 interface PaidPostMoreButtonProps {

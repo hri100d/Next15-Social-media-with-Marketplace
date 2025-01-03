@@ -1,12 +1,6 @@
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
-import {
-  CommentsPage,
-  getCommentsDataInclude,
-  getPaidCommentsDataInclude,
-  PaidCommentsPage,
-} from "@/lib/types";
-import { pages } from "next/dist/build/templates/app-page";
+import { getPaidCommentsDataInclude, PaidCommentsPage } from "@/lib/types";
 import { NextRequest } from "next/server";
 
 export async function GET(

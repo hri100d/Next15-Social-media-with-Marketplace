@@ -16,6 +16,7 @@ export async function POST(req: Request) {
       process.env.STRIPE_CONNECT_WEBHOOK_SECRET as string
     );
   } catch (error) {
+    console.error(error);
     return new Response("webhooks error", { status: 400 });
   }
 
@@ -23,7 +24,7 @@ export async function POST(req: Request) {
     case "account.updated": {
       const account = event.data.object;
 
-      const data = await prisma.user.update({
+      await prisma.user.update({
         where: {
           connectedAccountId: account.id,
         },

@@ -12,7 +12,7 @@ interface NotificationProps {
 export default function Notification({ notification }: NotificationProps) {
   const notificationTypeMap: Record<
     NotificationType,
-    { message: string; icon: any; href: string }
+    { message: string; icon: React.ReactNode; href: string }
   > = {
     FOLLOW: {
       message: `${notification.issuer.displayName} followed you`,

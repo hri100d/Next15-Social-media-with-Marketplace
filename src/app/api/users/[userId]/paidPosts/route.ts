@@ -1,11 +1,6 @@
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
-import {
-  getPaidPostDataInclude,
-  getPostDataInclude,
-  PaidPostsPage,
-  PostsPage,
-} from "@/lib/types";
+import { getPaidPostDataInclude, PaidPostsPage } from "@/lib/types";
 import { NextRequest } from "next/server";
 
 export async function GET(

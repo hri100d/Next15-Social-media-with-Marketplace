@@ -1,4 +1,4 @@
-import { CommentData, PaidCommentData } from "@/lib/types";
+import { PaidCommentData } from "@/lib/types";
 import UserTooltip from "../../UserTooltip";
 import Link from "next/link";
 import UserAvatar from "../../UserAvatar";

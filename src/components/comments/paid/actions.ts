@@ -2,12 +2,7 @@
 
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
-import {
-  getCommentsDataInclude,
-  getPaidCommentsDataInclude,
-  PaidPostData,
-  PostData,
-} from "@/lib/types";
+import { getPaidCommentsDataInclude, PaidPostData } from "@/lib/types";
 import { createCommenSchema } from "@/lib/validation";
 
 export async function submitPaidComment({

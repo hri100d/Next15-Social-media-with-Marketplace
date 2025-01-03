@@ -13,13 +13,9 @@ import { useState } from "react";
 import { MessageSquare } from "lucide-react";
 import { Button } from "../ui/button";
 import Comments from "../comments/paid/Comments";
-import PostMoreButton from "./PaidPostMoreButton";
 import PaidPostMoreButton from "./PaidPostMoreButton";
-import BookmarkButton from "./BookmarkButton";
 import PaidBookmarkButton from "./PaidBookmarkButton";
-import LoadingButton from "../LoadingButton";
 import { BuyProduct } from "./actions";
-import { Span } from "next/dist/trace";
 
 interface PaidPostProps {
   paidpost: PaidPostData;
@@ -130,38 +126,6 @@ function MediaPreviews({ attachments }: MediaPreviewsProps) {
   );
 }
 
-interface MediaPreviewProps {
-  media: Media;
-}
-
-function MediaPreview({ media }: MediaPreviewProps) {
-  if (media.type === "IMAGE") {
-    return (
-      <Image
-        src={media.url}
-        alt="Attachment"
-        width={250}
-        height={500}
-        className="mx-auto size-fir max-h-[30rem] rounded-sm"
-      />
-    );
-  }
-
-  if (media.type === "VIDEO") {
-    return (
-      <div>
-        <video
-          src={media.url}
-          controls
-          className="mx-auto size-fit max-h-[30rem] rounded-sm"
-        />
-      </div>
-    );
-  }
-
-  return <p className="text-destructive">Unsupported media type</p>;
-}
-
 interface CommentButtonProps {
   paidpost: PaidPostData;
   onClick: () => void;
@@ -200,7 +164,7 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ mediaFiles }) => {
     <div className="relative w-full max-w-[500px] mx-auto group">
       <div className="overflow-hidden rounded-lg flex items-center justify-center">
         {mediaFiles[currentIndex].type === "IMAGE" ? (
-          <img
+          <Image
             src={mediaFiles[currentIndex].url}
             alt={`Media ${currentIndex + 1}`}
             className="w-auto h-auto max-w-[500px] max-h-[500px] object-contain"

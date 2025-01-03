@@ -3,9 +3,8 @@ import { Eye, EyeOff } from "lucide-react";
 import React, { useState } from "react";
 import { Input, InputProps } from "./ui/input";
 
-
 const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
+  ({ className, ...props }, ref) => {
     const [showPassword, setShowPassword] = useState(false);
 
     return (
@@ -30,7 +29,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
         </button>
       </div>
     );
-  },
+  }
 );
 
 PasswordInput.displayName = "PasswordInput";

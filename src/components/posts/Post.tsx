@@ -114,38 +114,6 @@ function MediaPreviews({ attachments }: MediaPreviewsProps) {
   );
 }
 
-interface MediaPreviewProps {
-  media: Media;
-}
-
-function MediaPreview({ media }: MediaPreviewProps) {
-  if (media.type === "IMAGE") {
-    return (
-      <Image
-        src={media.url}
-        alt="Attachment"
-        width={250}
-        height={500}
-        className="mx-auto size-fir max-h-[30rem] rounded-sm"
-      />
-    );
-  }
-
-  if (media.type === "VIDEO") {
-    return (
-      <div>
-        <video
-          src={media.url}
-          controls
-          className="mx-auto size-fit max-h-[30rem] rounded-sm"
-        />
-      </div>
-    );
-  }
-
-  return <p className="text-destructive">Unsupported media type</p>;
-}
-
 interface CommentButtonProps {
   post: PostData;
   onClick: () => void;
@@ -185,7 +153,7 @@ const MediaCarousel: React.FC<MediaCarouselProps> = ({ mediaFiles }) => {
       {/* Media Display */}
       <div className="overflow-hidden rounded-lg flex items-center justify-center">
         {mediaFiles[currentIndex].type === "IMAGE" ? (
-          <img
+          <Image
             src={mediaFiles[currentIndex].url}
             alt={`Media ${currentIndex + 1}`}
             className="w-auto h-auto max-w-[500px] max-h-[500px] object-contain"

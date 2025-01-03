@@ -1,11 +1,10 @@
 import { validateRequest } from "@/auth";
 import { Button } from "@/components/ui/button";
 import prisma from "@/lib/prisma";
-import { Bell, Bookmark, HomeIcon, Mail } from "lucide-react";
+import { Bookmark, HomeIcon } from "lucide-react";
 import Link from "next/link";
 import NotificationsButton from "./NotificationsButton";
 import MessagesButton from "./MessagesButton";
-import { UnreadMessagesNotification } from "stream-chat-react";
 import streamServerClient from "@/lib/stream";
 
 interface MenuBarProps {

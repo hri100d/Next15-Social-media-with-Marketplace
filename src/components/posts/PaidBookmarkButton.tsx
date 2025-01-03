@@ -8,7 +8,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { Bookmark, Heart } from "lucide-react";
+import { Bookmark } from "lucide-react";
 
 interface PaidBookmarkButtonProps {
   paidpostId: string;

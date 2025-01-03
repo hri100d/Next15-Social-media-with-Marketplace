@@ -6,7 +6,7 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import { CommentsPage, PaidCommentsPage } from "@/lib/types";
+import { PaidCommentsPage } from "@/lib/types";
 import { deletePaidComment, submitPaidComment } from "./actions";
 
 export function useSubmitPaidCommentMutation(postId: string) {

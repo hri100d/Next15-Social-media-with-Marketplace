@@ -15,7 +15,6 @@ import { useSubmitPaidPostMutation } from "./mutations";
 import "../styles.css";
 import useMediaUpload, { Attachment } from "../useMediaUpload";
 import { useDropzone } from "@uploadthing/react";
-import { count } from "console";
 
 export default function PaidPostEditor() {
   const { user } = useSession();
@@ -35,7 +34,7 @@ export default function PaidPostEditor() {
     onDrop: startUpload,
   });
 
-  const { onClick, ...rootProps } = getRootProps();
+  const { ...rootProps } = getRootProps();
 
   const titleEditor = useEditor({
     extensions: [
@@ -287,7 +286,7 @@ interface AttachmentPreviewProps {
 }
 
 function AttachmentPreview({
-  attachment: { file, mediaId, isUploading },
+  attachment: { file, isUploading },
   onRemoveClick,
 }: AttachmentPreviewProps) {
   const src = URL.createObjectURL(file);

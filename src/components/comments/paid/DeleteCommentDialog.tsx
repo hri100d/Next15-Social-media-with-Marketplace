@@ -1,4 +1,4 @@
-import { CommentData, PaidCommentData } from "@/lib/types";
+import { PaidCommentData } from "@/lib/types";
 import LoadingButton from "../../LoadingButton";
 import { Button } from "../../ui/button";
 import {
@@ -43,7 +43,9 @@ export default function DeleteCommentDialog({
         <DialogFooter>
           <LoadingButton
             variant="destructive"
-            onClick={() => mutation.mutate(paidComment.id, { onSuccess: onClose })}
+            onClick={() =>
+              mutation.mutate(paidComment.id, { onSuccess: onClose })
+            }
             loading={mutation.isPending}
           >
             Delete
