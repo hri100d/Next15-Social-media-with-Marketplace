@@ -30,7 +30,7 @@ export const fileRouter = {
         await new UTApi().deleteFiles(key);
       }
 
-      const newAvatarUrl = file.url.replace(
+      const newAvatarUrl = file.appUrl.replace(
         "/f/",
         `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`
       );
@@ -68,7 +68,6 @@ export const fileRouter = {
       return {};
     })
     .onUploadComplete(async ({ file }) => {
-
       const fileUrl = file.appUrl.replace(
         `/f/`,
         `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`
@@ -79,7 +78,6 @@ export const fileRouter = {
           type: file.type.startsWith("image") ? "IMAGE" : "VIDEO",
         },
       });
-
 
       return { mediaId: media.id };
     }),
