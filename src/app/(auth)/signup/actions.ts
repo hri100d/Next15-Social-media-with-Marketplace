@@ -9,6 +9,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { hash } from "argon2";
 import streamServerClient from "@/lib/stream";
+import { stripe } from "@/lib/stripe";
 
 export async function signUp(
   credentials: SignUpValues
@@ -54,6 +55,21 @@ export async function signUp(
       };
     }
 
+    const account = await stripe.accounts.create({
+      email: email,
+      controller: {
+        losses: {
+          payments: "application",
+        },
+        fees: {
+          payer: "application",
+        },
+        stripe_dashboard: {
+          type: "express",
+        },
+      },
+    });
+
     await prisma.$transaction(async (tx) => {
       await tx.user.create({
         data: {
@@ -62,6 +78,7 @@ export async function signUp(
           displayName: username,
           email,
           passwordHash,
+          connectedAccountId: account.id,
         },
       });
 

@@ -19,7 +19,8 @@ export const lucia = new Lucia(adapter, {
       username: databaseUserAttributes.username,
       displayName: databaseUserAttributes.displayName,
       avatarUrl: databaseUserAttributes.avatarUrl,
-      googleId: databaseUserAttributes.googleId,
+      connectedAccountId: databaseUserAttributes.connectedAccountId,
+      stripeConnectedLinked: databaseUserAttributes.stripeConnectedLinked,
     };
   },
 });
@@ -36,7 +37,8 @@ interface DatabaseUserAttributes {
   username: string;
   displayName: string;
   avatarUrl: string | null;
-  googleId: string | null;
+  connectedAccountId: string | null;
+  stripeConnectedLinked: boolean;
 }
 
 export const validateRequest = cache(
@@ -75,5 +77,5 @@ export const validateRequest = cache(
     } catch {}
 
     return result;
-  },
+  }
 );

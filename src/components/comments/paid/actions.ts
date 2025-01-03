@@ -38,7 +38,7 @@ export async function submitPaidComment({
             data: {
               issuerId: user.id,
               recipientId: paidpost.user.id,
-              postId: paidpost.id,
+              paidPostId: paidpost.id,
               type: "COMMENT",
             },
           }),

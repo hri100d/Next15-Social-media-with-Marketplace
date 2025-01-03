@@ -68,7 +68,7 @@ export default async function Page({ params }: PageProps) {
   return (
     <main className="flex w-full min-w-0 gap-5">
       <div className="w-full min-w-0 space-y-5">
-        <UserProfile user={user} loggedInUserId={loggedInUser.id} />
+        <UserProfile user={user} loggedInUser={loggedInUser} />
         <div className="rounded-sm bg-card p-5 shadow-sm">
           <h2 className="text-center text-2xl font-bold">
             {user.displayName}&apos;s posts
@@ -93,15 +93,19 @@ export default async function Page({ params }: PageProps) {
 }
 
 interface UserProfileProps {
+  loggedInUser: User;
   user: UserData;
-  loggedInUserId: string;
 }
 
-async function UserProfile({ user, loggedInUserId }: UserProfileProps) {
+import { CreateStripeAccountLink, GetStripeDashboardLink } from "./actions"; // Make sure the action is imported
+import { Button } from "@/components/ui/button";
+import { User } from "lucia";
+
+async function UserProfile({ user, loggedInUser }: UserProfileProps) {
   const followerInfo: FollowerInfo = {
     followers: user._count.followers,
     isFollowedByUser: user.followers.some(
-      ({ followerId }) => followerId === loggedInUserId
+      ({ followerId }) => followerId === loggedInUser.id
     ),
   };
 
@@ -129,8 +133,24 @@ async function UserProfile({ user, loggedInUserId }: UserProfileProps) {
             <FollowerCount userId={user.id} initialState={followerInfo} />
           </div>
         </div>
-        {user.id === loggedInUserId ? (
-          <EditProfileButton user={user} />
+
+        {user.id === loggedInUser.id ? (
+          <div className="flex gap-3">
+            {loggedInUser.stripeConnectedLinked ? (
+              <form action={GetStripeDashboardLink}>
+                <div>
+                  <Button type="submit">View Dashboard</Button>
+                </div>
+              </form>
+            ) : (
+              <form action={CreateStripeAccountLink}>
+                <div>
+                  <Button type="submit">Connect Stripe</Button>
+                </div>
+              </form>
+            )}
+            <EditProfileButton user={user} />
+          </div>
         ) : (
           <FollowButton userId={user.id} initialState={followerInfo} />
         )}

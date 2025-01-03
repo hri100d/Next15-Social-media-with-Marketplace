@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import Bookmarks from "./Bookmarks";
 import TrendsSidebar from "@/components/TrendsSidebar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import PaidBookmarks from "./PaidBookmarks";
 
 export const metadata: Metadata = {
   title: "Booksmarks",
@@ -13,7 +15,18 @@ export default function Page() {
         <div className="rounded-sm bg-card p-5 shadow-sm">
           <h1 className="text-center text-2xl font-bold">Bookmarks</h1>
         </div>
-        <Bookmarks />
+        <Tabs defaultValue="post">
+          <TabsList>
+            <TabsTrigger value="post">Post</TabsTrigger>
+            <TabsTrigger value="paid-post">Paid Post</TabsTrigger>
+          </TabsList>
+          <TabsContent value="post">
+            <Bookmarks />
+          </TabsContent>
+          <TabsContent value="paid-post">
+            <PaidBookmarks />
+          </TabsContent>
+        </Tabs>
       </div>
       <TrendsSidebar />
     </main>

@@ -1,10 +1,11 @@
 "use client";
 
 import InfiniteScrollContainer from "@/components/InfiniteScrollContainer";
+import PaidPost from "@/components/posts/PaidPost";
 import Post from "@/components/posts/Post";
 import PostsLoadingSkeleton from "@/components/posts/PostsLoadingSkeleton";
 import kyInstance from "@/lib/ky";
-import { PostsPage } from "@/lib/types";
+import { PaidPostData, PaidPostsPage, PostsPage } from "@/lib/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 
@@ -12,7 +13,7 @@ interface SearchResultsProps {
   query: string;
 }
 
-export default function SearchResults({ query }: SearchResultsProps) {
+export default function SearchPaidResults({ query }: SearchResultsProps) {
   const {
     data,
     fetchNextPage,
@@ -21,22 +22,22 @@ export default function SearchResults({ query }: SearchResultsProps) {
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: ["post-feed", "search", query],
+    queryKey: ["paid-post-feed", "search", query],
     queryFn: ({ pageParam }) =>
       kyInstance
-        .get("/api/search", {
+        .get("/api/paidSearch", {
           searchParams: {
             q: query,
             ...(pageParam ? { cursor: pageParam } : {}),
           },
         })
-        .json<PostsPage>(),
+        .json<PaidPostsPage>(),
     initialPageParam: null as string | null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     gcTime: 0,
   });
 
-  const posts = data?.pages.flatMap((page) => page.posts) || [];
+  const posts = data?.pages.flatMap((page) => page.paidposts) || [];
 
   if (status === "pending") {
     return <PostsLoadingSkeleton />;
@@ -64,7 +65,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
       onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
     >
       {posts.map((post) => (
-        <Post key={post.id} post={post} />
+        <PaidPost key={post.id} paidpost={post} />
       ))}
       {isFetchingNextPage && <Loader2 className="mx-auto my-3 animate-spin" />}
     </InfiniteScrollContainer>

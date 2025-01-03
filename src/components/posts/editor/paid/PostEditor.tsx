@@ -88,20 +88,20 @@ export default function PaidPostEditor() {
   function onSubmit() {
     const priceText = priceEditor?.getText() || "0";
     const countText = countEditor?.getText() || "0";
-  
+
     const price = parseFloat(priceText);
     const count = parseInt(countText, 10);
-  
+
     if (isNaN(price) || price < 0) {
       alert("Please enter a valid price greater than or equal to 0.");
       return;
     }
-  
+
     if (isNaN(count) || count < 0) {
       alert("Please enter a valid count greater than or equal to 0.");
       return;
     }
-  
+
     mutation.mutate(
       {
         title: titleEditor?.getText() || "",
@@ -124,7 +124,6 @@ export default function PaidPostEditor() {
       }
     );
   }
-  
 
   function onPaste(e: ClipboardEvent<HTMLInputElement>) {
     const files = Array.from(e.clipboardData.items)
@@ -135,74 +134,82 @@ export default function PaidPostEditor() {
 
   return (
     <div className="flex flex-col gap-5 rounded-sm bg-card p-5 shadow-sm">
-      <div className="flex gap-5">
-        <UserAvatar avatarUrl={user.avatarUrl} className="hidden sm:inline" />
-        <div {...rootProps} className="w-full flex flex-col gap-3">
-          <EditorContent
-            editor={titleEditor}
-            className={cn(
-              "max-h-[20rem] w-full overflow-y-auto rounded-sm bg-background px-5 py-3",
-              isDragActive && "outline-dashed"
-            )}
-          />
-          <EditorContent
-            editor={contentEditor}
-            className={cn(
-              "max-h-[20rem] w-full overflow-y-auto rounded-sm bg-background px-5 py-3",
-              isDragActive && "outline-dashed"
-            )}
-            onPaste={onPaste}
-          />
-          <EditorContent
-            editor={priceEditor}
-            className={cn(
-              "max-h-[20rem] w-full overflow-y-auto rounded-sm bg-background px-5 py-3",
-              isDragActive && "outline-dashed"
-            )}
-          />
-          <EditorContent
-            editor={countEditor}
-            className={cn(
-              "max-h-[20rem] w-full overflow-y-auto rounded-sm bg-background px-5 py-3",
-              isDragActive && "outline-dashed"
-            )}
-          />
-          <input {...getInputProps()} />
+      {user.stripeConnectedLinked && (
+        <div className="flex gap-5">
+          <UserAvatar avatarUrl={user.avatarUrl} className="hidden sm:inline" />
+          <div {...rootProps} className="w-full flex flex-col gap-3">
+            <EditorContent
+              editor={titleEditor}
+              className={cn(
+                "max-h-[20rem] w-full overflow-y-auto rounded-sm bg-background px-5 py-3",
+                isDragActive && "outline-dashed"
+              )}
+            />
+            <EditorContent
+              editor={contentEditor}
+              className={cn(
+                "max-h-[20rem] w-full overflow-y-auto rounded-sm bg-background px-5 py-3",
+                isDragActive && "outline-dashed"
+              )}
+              onPaste={onPaste}
+            />
+            <EditorContent
+              editor={priceEditor}
+              className={cn(
+                "max-h-[20rem] w-full overflow-y-auto rounded-sm bg-background px-5 py-3",
+                isDragActive && "outline-dashed"
+              )}
+            />
+            <EditorContent
+              editor={countEditor}
+              className={cn(
+                "max-h-[20rem] w-full overflow-y-auto rounded-sm bg-background px-5 py-3",
+                isDragActive && "outline-dashed"
+              )}
+            />
+            <input {...getInputProps()} />
+          </div>
         </div>
-      </div>
+      )}
       {!!attachments.length && (
         <AttachmentPreviews
           attachments={attachments}
           removeAttachment={removeAttachment}
         />
       )}
-      <div className="flex items-center justify-end gap-3">
-        {isUploading && (
-          <>
-            <span className="text-sm">{uploadProgress ?? 0}%</span>
-            <Loader2 className="size-5 animate-spin text-primary" />
-          </>
-        )}
-        <AddAttachmentsButton
-          onFilesSelected={startUpload}
-          disabled={isUploading || attachments.length >= 5}
-        />
-        <LoadingButton
-          onClick={onSubmit}
-          loading={mutation.isPending}
-          disabled={
-            (!titleEditor?.isEmpty &&
-              !contentEditor?.isEmpty &&
-              priceEditor?.isEmpty &&
-              countEditor?.isEmpty &&
-              attachments.length === 0) ||
-            isUploading
-          }
-          className="min-w-20"
-        >
-          Post
-        </LoadingButton>
-      </div>
+      {user.stripeConnectedLinked ? (
+        <div className="flex items-center justify-end gap-3">
+          {isUploading && (
+            <>
+              <span className="text-sm">{uploadProgress ?? 0}%</span>
+              <Loader2 className="size-5 animate-spin text-primary" />
+            </>
+          )}
+          <AddAttachmentsButton
+            onFilesSelected={startUpload}
+            disabled={isUploading || attachments.length >= 5}
+          />
+          <LoadingButton
+            onClick={onSubmit}
+            loading={mutation.isPending}
+            disabled={
+              (!titleEditor?.isEmpty &&
+                !contentEditor?.isEmpty &&
+                priceEditor?.isEmpty &&
+                countEditor?.isEmpty &&
+                attachments.length === 0) ||
+              isUploading
+            }
+            className="min-w-20"
+          >
+            Post
+          </LoadingButton>
+        </div>
+      ) : (
+        <p className="text-sm font-semibold break-words">
+          Please go to your profile and link your stripe account.
+        </p>
+      )}
     </div>
   );
 }

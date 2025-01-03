@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FollowingFeed from "./FollowingFeed";
 import PaidPostEditor from "@/components/posts/editor/paid/PostEditor";
 import PaidForYouFeed from "./PaidForYouFeed";
+import PaidFollowingFeed from "./PaidFollowingFeed";
 
 export default async function Home() {
   return (
@@ -40,7 +41,7 @@ export default async function Home() {
             <PaidForYouFeed />
           </TabsContent>
           <TabsContent value="paid-following">
-            <ForYouFeed />
+            <PaidFollowingFeed />
           </TabsContent>
         </Tabs>
       </div>

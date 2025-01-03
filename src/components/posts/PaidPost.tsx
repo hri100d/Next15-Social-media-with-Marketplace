@@ -18,6 +18,8 @@ import PaidPostMoreButton from "./PaidPostMoreButton";
 import BookmarkButton from "./BookmarkButton";
 import PaidBookmarkButton from "./PaidBookmarkButton";
 import LoadingButton from "../LoadingButton";
+import { BuyProduct } from "./actions";
+import { Span } from "next/dist/trace";
 
 interface PaidPostProps {
   paidpost: PaidPostData;
@@ -73,6 +75,9 @@ export default function PaidPost({ paidpost }: PaidPostProps) {
         </div>
       </div>
       <Linkify>
+        <div className="whitespace-pre-line break-words text-lg font-bold">
+          {paidpost.title}
+        </div>
         <div className="whitespace-pre-line break-words">
           {paidpost.content}
         </div>
@@ -88,7 +93,20 @@ export default function PaidPost({ paidpost }: PaidPostProps) {
             onClick={() => setShowComments(!showComments)}
           />
         </div>
-        <Button variant="default">Buy for {paidpost.price}</Button>
+        {paidpost.user.id !== user.id && user.stripeConnectedLinked ? (
+          <form action={BuyProduct} className="flex gap-3 items-center">
+            <p className="text-sm font-semibold">Quantity: {paidpost.count}</p>
+            <input type="hidden" name="id" value={paidpost.id} />
+            <Button type="submit" variant="default">
+              Buy for {paidpost.price}$
+            </Button>
+          </form>
+        ) : (
+          <div className="flex justify-end gap-3">
+            <div className="text-sm font-bold">Quantity: {paidpost.count}</div>
+            <div className="text-sm font-bold">Price: {paidpost.price}</div>
+          </div>
+        )}
       </div>
       {showComments && <Comments paidpost={paidpost} />}
     </article>

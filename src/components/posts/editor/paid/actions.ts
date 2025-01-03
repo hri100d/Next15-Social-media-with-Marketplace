@@ -2,8 +2,10 @@
 
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
+import { stripe } from "@/lib/stripe";
 import { getPaidPostDataInclude } from "@/lib/types";
 import { createPaidPostSchema } from "@/lib/validation";
+import { redirect } from "next/navigation";
 
 export async function submitPaidPost(input: {
   title: string;

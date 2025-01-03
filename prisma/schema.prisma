@@ -22,20 +22,18 @@ model User {
   passwordHash          String?
   avatarUrl             String?
   bio                   String?
-  stripeCustomerId      String?              // Stripe Customer ID for managing payments
-  stripeAccountId       String?              // Stripe Account ID for payouts
-  stripeConnectEnabled  Boolean              @default(false) // Indicates if Stripe Connect is set up
-  stripePayoutsEnabled  Boolean              @default(false) // Indicates if payouts are enabled
+  connectedAccountId    String               @unique
+  stripeConnectedLinked Boolean              @default(false)
   sessions              Session[]
   posts                 Post[]
-  paidPosts             PaidPost[]           // Paid posts created by the user
+  paidPosts             PaidPost[]          
   following             Follow[]             @relation("Following")
   followers             Follow[]             @relation("Followers")
   likes                 Like[]
   bookmarks             Bookmark[]
-  paidPostBookmarks     PaidPostBookmark[]   // Bookmarks for paid posts
+  paidPostBookmarks     PaidPostBookmark[]   
   comments              Comment[]
-  paidPostComments      PaidPostComment[]    // Comments on paid posts
+  paidPostComments      PaidPostComment[]    
   receivedNotifications Notification[]       @relation("Recipient")
   issuedNotifications   Notification[]       @relation("Issuer")
 
@@ -90,9 +88,9 @@ model PaidPost {
   userId              String
   user                User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   attachments         Media[]        @relation("PaidPostMedia")
-  bookmarks           PaidPostBookmark[] // Bookmarks for the PaidPost
-  comments            PaidPostComment[] // Comments for the PaidPost
-  linkedNotifications Notification[] @relation("PaidPostNotifications") // Notifications linked to the PaidPost
+  bookmarks           PaidPostBookmark[] 
+  comments            PaidPostComment[] 
+  linkedNotifications Notification[] @relation("PaidPostNotifications")
 
   createdAt DateTime @default(now())
 
