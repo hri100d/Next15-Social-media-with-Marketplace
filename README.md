@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Social Media with Marketplace Platform
 
-## Getting Started
+## Project Description
+This educational project represents an innovative platform that combines the functionalities of a social media network with a marketplace. The primary goals include:
 
-First, run the development server:
+- Creating a social network where users can publish text and image posts, interact through likes, comments, and follows.
+- Integrating a marketplace for users to upload and sell their unique creations, manage products, and track their earnings.
+- Processing transactions securely via Stripe.
+- Offering a user-friendly interface for search, communication, and analytics of sales and user behavior.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The platform’s innovative approach lies in merging social and commercial elements into a single platform, aimed at creative individuals and small entrepreneurs.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Key Features
+1. **Profile and Post Management**: Users can create profiles, publish posts, and manage their interactions.
+2. **Product Sales**: Users can list products for sale with descriptions and media, while the platform facilitates transactions.
+3. **Real-time Communication**: Chat functionality and notifications enhance user interaction.
+4. **Search and Classification**: Posts and products can be searched and categorized effectively.
+5. **Third-party Integrations**: Integration with tools like Stripe ensures secure payments.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Technologies and Tools
+- **Next.js and React**: Frontend development.
+- **Prisma**: Database management.
+- **Stripe API**: Secure payment processing.
+- **Tailwind CSS**: Styles and components.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Business Model and Processes
+### Business Process Model
+The platform combines social networking with marketplace functionalities, allowing creators and entrepreneurs to monetize their products.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Functional Description, Objects, and User Cases
+### Main User Cases
+1. **Profile Creation**:
+   - Users register accounts by providing name, email, and password.
 
-## Deploy on Vercel
+2. **Content Publishing**:
+   - Users create posts with text, images, or a combination.
+   - Option to delete posts.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Product Sales**:
+   - Add products with descriptions, media, and prices.
+   - Manage a list of available products.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. **User Interaction**:
+   - Like and comment on posts.
+   - Follow other users.
+
+5. **Search and Filtering**:
+   - Search by keywords or hashtags.
+
+6. **Chat and Notifications**:
+   - Send messages between users.
+   - Receive notifications for likes, comments, and orders.
